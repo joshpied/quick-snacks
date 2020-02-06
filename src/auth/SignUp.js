@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -34,10 +35,7 @@ const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
 
 const ERROR_MSG_ACCOUNT_EXISTS = `
   An account with this E-Mail address already exists.
-  Try to login with this account instead. If you think the
-  account is already used from one of the social logins, try
-  to sign in with one of them. Afterward, associate your accounts
-  on your personal account page.
+  Try to login with this account instead.
 `;
 
 class SignUpFormBase extends Component {
@@ -144,7 +142,7 @@ class SignUpFormBase extends Component {
                 required={true}
                 fullWidth
                 name="passwordTwo"
-                label="Password Confirmation"
+                label="Confirm Password"
                 type="password"
                 id="passwordTwo"
                 value={passwordTwo}
@@ -175,12 +173,12 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
+  <Link variant="body2" to={ROUTES.SIGN_UP}>
+    Don't have an account? <span>Sign Up</span>
+  </Link>
 );
 
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 
 export default SignUpPage;
 

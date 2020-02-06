@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SignOutButton from './SignOut';
+import SignOutButton from '../auth/SignOut';
 
 import * as ROUTES from '../constants/routes';
 
@@ -16,11 +16,13 @@ const liStyle = {
   }
 };
 
-const Navigation = () => (
+const Navigation = ({ authUser }) => (
+  <div>{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+);
+
+// Nav bar displayed when user is signed in
+const NavigationAuth = () => (
   <ul style={ulStyle}>
-    <li style={liStyle}>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-    </li>
     <li style={liStyle}>
       <Link to={ROUTES.LANDING}>Landing</Link>
     </li>
@@ -35,4 +37,17 @@ const Navigation = () => (
     </li>
   </ul>
 );
+
+// Nav bar displayed when no user signed in
+const NavigationNonAuth = () => (
+  <ul style={ulStyle}>
+    <li style={liStyle}>
+      <Link to={ROUTES.LANDING}>Landing</Link>
+    </li>
+    <li style={liStyle}>
+      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    </li>
+  </ul>
+);
+
 export default Navigation;

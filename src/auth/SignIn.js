@@ -1,138 +1,118 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import firebase from 'firebase';
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { withStyles } from '@material-ui/core/styles';
+// import { withStyles } from '@material-ui/core/styles';
 
-import styles from './styles';
+// import styles from './styles';
+import { SignUpLink } from './SignUp';
 import * as ROUTES from '../constants/routes';
+import { withFirebase } from '../components/Firebase';
 
-class SignIn extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      email: null,
-      password: null,
-      loginError: ''
-    };
+const SignInPage = () => (
+  <div>
+    <Container component="main" maxWidth="xs">
+      <Link to={ROUTES.LANDING}>
+        <div>
+          <h1>Quick Recipes</h1>
+        </div>
+      </Link>
+      <Typography component="h1" variant="h5">
+        Sign In
+      </Typography>
+      <SignInForm />
+      <SignUpLink />
+    </Container>
+  </div>
+);
+
+const initialState = { email: '', password: '', error: null };
+
+class SignInFormBase extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { ...initialState };
   }
 
   render() {
-    const { classes } = this.props;
+    const { email, password, error } = this.state;
 
-    const buttonStyle = {
-      backgroundColor: '#00C170'
-    };
+    const isInvalid = password === '' || email === '';
 
     return (
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
-          <Link className={classes.link} to={ROUTES.LANDING}>
-            <div className={classes.logoContainer}>
-              <h1 className={classes.title}>Quick Recipes</h1>
-            </div>
-          </Link>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} onSubmit={e => this.submitLogin(e)}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={e => this.userTyping('email', e)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={e => this.userTyping('password', e)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              style={buttonStyle}
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            {this.state.loginError ? (
-              <Typography
-                className={classes.errorText}
-                component="h5"
-                variant="body2"
-              >
-                The email address or password entered is incorrect
-              </Typography>
-            ) : null}
-            <Grid container justify="center">
-              <Grid item>
-                <Link className={classes.link} variant="body2" to={ROUTES.SIGN_UP}>
-                  Don't have an account?{' '}
-                  <span className={classes.signUp}>Sign Up</span>
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Container>
+      <div>
+        <form onSubmit={e => this.submitLogin(e)}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            value={email}
+            autoComplete="email"
+            autoFocus
+            onChange={this.onChange}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            value={password}
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={this.onChange}
+          />
+          <Button
+            type="submit"
+            disabled={isInvalid}
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            Sign In
+          </Button>
+          {error ? (
+            <Typography component="h5" variant="body2">
+              {error.message}
+            </Typography>
+          ) : null}
+        </form>
+      </div>
     );
   }
 
-  userTyping = (type, e) => {
-    switch (type) {
-      case 'email':
-        this.setState({ email: e.target.value });
-        break;
-      case 'password':
-        this.setState({ password: e.target.value });
-        break;
-      default:
-        break;
-    }
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   submitLogin = e => {
-    e.preventDefault();
+    const { email, password } = this.state;
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(
-        () => {
-          this.props.history.push(ROUTES.HOME);
-        },
-        err => {
-          this.setState({ loginError: 'server error' });
-          console.log(err);
-        }
-      );
+    this.props.firebase
+      .signIn(email, password)
+      .then(() => {
+        this.setState({ ...initialState });
+        this.props.history.push(ROUTES.HOME);
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
+
+    e.preventDefault();
   };
 }
 
-export default withStyles(styles)(SignIn);
+const SignInForm = compose(withRouter, withFirebase)(SignInFormBase);
+
+export default SignInPage;
+export { SignInForm };

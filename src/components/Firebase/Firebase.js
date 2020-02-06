@@ -7,7 +7,7 @@ class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
-    // this.firestore = app.firestore();
+    this.db = app.firestore();
   }
 
   createUser = (email, password) =>
