@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 
 // import styles from './styles';
 import { SignUpLink } from './SignUp';
+import { PasswordForgetLink } from './ForgotPassword';
 import * as ROUTES from '../constants/routes';
 import { withFirebase } from '../components/Firebase';
 
@@ -25,6 +26,7 @@ const SignInPage = () => (
         Sign In
       </Typography>
       <SignInForm />
+      <PasswordForgetLink />
       <SignUpLink />
     </Container>
   </div>
@@ -97,7 +99,6 @@ class SignInFormBase extends Component {
 
   submitLogin = e => {
     const { email, password } = this.state;
-
     this.props.firebase
       .signIn(email, password)
       .then(() => {
@@ -107,7 +108,6 @@ class SignInFormBase extends Component {
       .catch(error => {
         this.setState({ error });
       });
-
     e.preventDefault();
   };
 }

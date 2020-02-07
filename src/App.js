@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import SignIn from './auth/SignIn';
 import SignUp from './auth/SignUp';
+import ForgotPassword from './auth/ForgotPassword';
 import Home from './home/Home';
 import Landing from './pages/Landing';
 
@@ -39,12 +40,8 @@ class App extends Component {
           <Route exact path={ROUTES.LANDING} component={Landing} />
           <Route path={ROUTES.SIGN_UP} component={SignUp} />
           <Route path={ROUTES.SIGN_IN} component={SignIn} />
+          <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
           <Route path={ROUTES.HOME} component={Home} />
-          {/* example for route with props
-          <Route
-            path="/dashboard"
-            render={props => <Dashboard {...props} isAuthed={true} />}
-          /> */}
         </div>
       </Router>
     );
