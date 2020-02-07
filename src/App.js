@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import SignIn from './auth/SignIn';
-import SignUp from './auth/SignUp';
-import ForgotPassword from './auth/ForgotPassword';
-import Home from './home/Home';
-import Landing from './pages/Landing';
-
 import Navigation from './components/Navigation';
 import * as ROUTES from './constants/routes';
 import { withAuthentication } from './components/Session';
+
+import SignIn from './auth/SignIn';
+import SignUp from './auth/SignUp';
+import ForgotPassword from './auth/ForgotPassword';
+
+import Home from './home/Home';
+import Account from './pages/Account'
+import Landing from './pages/Landing';
 
 class App extends Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class App extends Component {
           <Route path={ROUTES.SIGN_IN} component={SignIn} />
           <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
           <Route path={ROUTES.HOME} component={Home} />
+          <Route path={ROUTES.ACCOUNT} component={Account} />
         </div>
       </Router>
     );
