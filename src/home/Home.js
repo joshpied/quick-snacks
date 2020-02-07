@@ -4,6 +4,7 @@ import EditorComponent from './editor/editor';
 import './Home.css';
 import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase';
+import { withAuthorization } from '../components/Session';
 
 class Home extends React.Component {
   constructor() {
@@ -124,4 +125,5 @@ class Home extends React.Component {
   };
 }
 
-export default Home;
+const condition = authUser => !!authUser;
+export default withAuthorization(condition)(Home);
