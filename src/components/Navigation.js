@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SignOutButton from '../auth/SignOut';
 
 import * as ROUTES from '../constants/routes';
+import { AuthUserContext } from './Session';
 
 const ulStyle = {
   display: 'flex',
@@ -16,8 +17,12 @@ const liStyle = {
   }
 };
 
-const Navigation = ({ authUser }) => (
-  <div>{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+const Navigation = () => (
+  <div>
+    <AuthUserContext.Consumer>
+      {authUser => (authUser ? <NavigationAuth /> : <NavigationNonAuth />)}
+    </AuthUserContext.Consumer>
+  </div>
 );
 
 // Nav bar displayed when user is signed in
