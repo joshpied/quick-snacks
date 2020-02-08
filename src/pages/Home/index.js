@@ -4,11 +4,13 @@ import EditorComponent from './editor/editor';
 import './Home.css';
 import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase';
-import { withAuthorization } from '../components/Session';
+import { AuthUserContext, withAuthorization } from '../../components/Session';
 
 class Home extends React.Component {
-  constructor() {
-    super();
+  static contextType = AuthUserContext;
+
+  constructor(props) {
+    super(props);
     this.state = {
       selectedRecipeIndex: null,
       selectedRecipe: null,
@@ -18,30 +20,36 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="app-container">
-        <SidebarComponent
-          selectedRecipeIndex={this.state.selectedRecipeIndex}
-          recipes={this.state.recipes}
-          deleteRecipe={this.deleteRecipe}
-          selectRecipe={this.selectRecipe}
-          addRecipe={this.addRecipe}
-        ></SidebarComponent>
-        {this.state.selectedRecipe ? (
-          <EditorComponent
-            selectedRecipe={this.state.selectedRecipe}
-            selectedRecipeIndex={this.state.selectedRecipeIndex}
-            updateRecipe={this.updateRecipe}
-            recipes={this.state.recipes}
-          ></EditorComponent>
-        ) : null}
-      </div>
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <div className="app-container">
+            <SidebarComponent
+              selectedRecipeIndex={this.state.selectedRecipeIndex}
+              recipes={this.state.recipes}
+              deleteRecipe={this.deleteRecipe}
+              selectRecipe={this.selectRecipe}
+              addRecipe={this.addRecipe}
+            ></SidebarComponent>
+            {this.state.selectedRecipe ? (
+              <EditorComponent
+                selectedRecipe={this.state.selectedRecipe}
+                selectedRecipeIndex={this.state.selectedRecipeIndex}
+                updateRecipe={this.updateRecipe}
+                recipes={this.state.recipes}
+              ></EditorComponent>
+            ) : null}
+          </div>
+        )}
+      </AuthUserContext.Consumer>
     );
   }
 
   componentDidMount = () => {
+    console.log(this.context.uid);
     firebase
       .firestore()
       .collection('recipes')
+      .where('userId', '==', this.context.uid)
       .onSnapshot(serverUpdate => {
         const recipes = serverUpdate.docs.map(_doc => {
           const data = _doc.data();
@@ -51,6 +59,18 @@ class Home extends React.Component {
         console.log(recipes);
         this.setState({ recipes: recipes });
       });
+    // firebase
+    //   .firestore()
+    //   .collection('recipes')
+    //   .onSnapshot(serverUpdate => {
+    //     const recipes = serverUpdate.docs.map(_doc => {
+    //       const data = _doc.data();
+    //       data['id'] = _doc.id;
+    //       return data;
+    //     });
+    //     console.log(recipes);
+    //     this.setState({ recipes: recipes });
+    //   });
   };
 
   selectRecipe = (recipe, index) =>
@@ -76,6 +96,7 @@ class Home extends React.Component {
     const recipe = {
       title: title,
       body: '',
+      userId: this.context.uid,
       dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
       dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
     };

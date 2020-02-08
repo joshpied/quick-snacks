@@ -9,7 +9,7 @@ import SignIn from './auth/SignIn';
 import SignUp from './auth/SignUp';
 import ForgotPassword from './auth/ForgotPassword';
 
-import Home from './home/Home';
+import Home from './pages/Home';
 import Account from './pages/Account'
 import Landing from './pages/Landing';
 

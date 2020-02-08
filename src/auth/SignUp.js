@@ -50,18 +50,12 @@ class SignUpFormBase extends Component {
 
     this.props.firebase
       .createUser(email, passwordOne)
-      // // // // // // ADD USER TO DB TOO
-      // .then(authUser => {
-      //   return this.props.firebase.user(authUser.user.uid).set(
-      //     {
-      //       username,
-      //       email,
-      //     }
-      //   );
-      // })
-      // .then(() => {
-      //   return this.props.firebase.doSendEmailVerification();
-      // })
+      .then(authUser => {
+        return this.props.firebase.user(authUser.user.uid).set({
+          username,
+          email
+        });
+      })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
