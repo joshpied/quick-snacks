@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SignOutButton from '../auth/SignOut';
 
+import Button from '@material-ui/core/Button';
+
 import * as ROUTES from '../constants/routes';
 import { AuthUserContext } from './Session';
 
@@ -17,6 +19,12 @@ const liStyle = {
   }
 };
 
+const navStyle = {};
+
+const linkStyle = {
+  textDecoration: 'none'
+};
+
 const Navigation = () => (
   <div>
     <AuthUserContext.Consumer>
@@ -27,32 +35,27 @@ const Navigation = () => (
 
 // Nav bar displayed when user is signed in
 const NavigationAuth = () => (
-  <ul style={ulStyle}>
-    <li style={liStyle}>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li style={liStyle}>
-      <Link to={ROUTES.HOME}>Home</Link>
-    </li>
-    <li style={liStyle}>
-      <Link to={ROUTES.ACCOUNT}>Account</Link>
-    </li>
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+  <div style={navStyle}>
+    <Link to={ROUTES.HOME} style={linkStyle}>
+      <Button color="primary">Home</Button>
+    </Link>
+    <Link to={ROUTES.ACCOUNT} style={linkStyle}>
+      <Button color="primary">Account</Button>
+    </Link>
+    <SignOutButton />
+  </div>
 );
 
 // Nav bar displayed when no user signed in
 const NavigationNonAuth = () => (
-  <ul style={ulStyle}>
-    <li style={liStyle}>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li style={liStyle}>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-    </li>
-  </ul>
+  <div style={navStyle}>
+    <Link to={ROUTES.LANDING} style={linkStyle}>
+      <Button color="primary">Landing</Button>
+    </Link>
+    <Link to={ROUTES.SIGN_IN} style={linkStyle}>
+      <Button color="primary">Sign In</Button>
+    </Link>
+  </div>
 );
 
 export default Navigation;

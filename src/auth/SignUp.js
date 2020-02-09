@@ -51,10 +51,13 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .createUser(email, passwordOne)
       .then(authUser => {
-        return this.props.firebase.user(authUser.user.uid).set({
-          username,
-          email
-        });
+        return this.props.firebase.user(authUser.user.uid).set(
+          {
+            username,
+            email
+          },
+          { merge: true }
+        );
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });

@@ -6,6 +6,8 @@ import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase';
 import { AuthUserContext, withAuthorization } from '../../components/Session';
 
+const DEFAULT_RECIPE_BODY = '<h1>Ingredients</h1><ul><li>Item</li></ul><h1>Instructions</h1><ol><li>Step</li></ol>'
+
 class Home extends React.Component {
   static contextType = AuthUserContext;
 
@@ -45,32 +47,15 @@ class Home extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log(this.context.uid);
-    firebase
-      .firestore()
-      .collection('recipes')
-      .where('userId', '==', this.context.uid)
-      .onSnapshot(serverUpdate => {
-        const recipes = serverUpdate.docs.map(_doc => {
-          const data = _doc.data();
-          data['id'] = _doc.id;
-          return data;
-        });
-        console.log(recipes);
-        this.setState({ recipes: recipes });
+    this.props.firebase.recipes(this.context.uid).onSnapshot(serverUpdate => {
+      const recipes = serverUpdate.docs.map(_doc => {
+        const data = _doc.data();
+        data['id'] = _doc.id;
+        return data;
       });
-    // firebase
-    //   .firestore()
-    //   .collection('recipes')
-    //   .onSnapshot(serverUpdate => {
-    //     const recipes = serverUpdate.docs.map(_doc => {
-    //       const data = _doc.data();
-    //       data['id'] = _doc.id;
-    //       return data;
-    //     });
-    //     console.log(recipes);
-    //     this.setState({ recipes: recipes });
-    //   });
+      console.log(recipes);
+      this.setState({ recipes: recipes });
+    });
   };
 
   selectRecipe = (recipe, index) =>
@@ -79,15 +64,11 @@ class Home extends React.Component {
   updateRecipe = (id, recipeObj) => {
     // make sure element being updated is still in the array of recipes
     if (this.state.recipes.some(recipe => recipe.id === id)) {
-      firebase
-        .firestore()
-        .collection('recipes')
-        .doc(id)
-        .update({
-          title: recipeObj.title,
-          body: recipeObj.body,
-          dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
-        });
+      this.props.firebase.recipe(id).update({
+        title: recipeObj.title,
+        body: recipeObj.body,
+        dateUpdated: this.props.firebase.fieldValue.serverTimestamp() //firebase.firestore.FieldValue.serverTimestamp()
+      });
     }
   };
 
@@ -95,10 +76,10 @@ class Home extends React.Component {
     // init new recipe
     const recipe = {
       title: title,
-      body: '',
+      body: DEFAULT_RECIPE_BODY,
       userId: this.context.uid,
-      dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
-      dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
+      dateCreated: this.props.firebase.fieldValue.serverTimestamp(), //firebase.firestore.FieldValue.serverTimestamp(),
+      dateUpdated: this.props.firebase.fieldValue.serverTimestamp() //firebase.firestore.FieldValue.serverTimestamp()
     };
     // add recipe to db
     const newRecipe = await firebase
@@ -137,12 +118,7 @@ class Home extends React.Component {
           )
         : this.setState({ selectedRecipeIndex: null, selectedRecipe: null });
     }
-
-    firebase
-      .firestore()
-      .collection('recipes')
-      .doc(recipe.id)
-      .delete();
+    this.props.firebase.recipe(recipe.id).delete();
   };
 }
 

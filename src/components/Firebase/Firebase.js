@@ -9,6 +9,7 @@ class Firebase {
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
     this.db = app.firestore();
+    this.fieldValue = app.firestore.FieldValue;
   }
 
   /** Auth */
@@ -28,6 +29,13 @@ class Firebase {
   user = uid => this.db.doc(`users/${uid}`);
 
   users = () => this.db.doc('users');
+
+  /** Recipes */
+  // get recipes belonging to logged in user
+  recipes = userId =>
+    this.db.collection('recipes').where('userId', '==', userId);
+
+  recipe = recipeId => this.db.doc(`recipes/${recipeId}`);
 }
 
 export default Firebase;
