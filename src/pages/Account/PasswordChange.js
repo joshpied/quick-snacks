@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import { withFirebase } from '../../components/Firebase';
@@ -42,12 +41,13 @@ class PasswordChangeForm extends Component {
 
     return (
       <Container component="main" maxWidth="xs">
-        <Typography component="h1" variant="h5">
+        <h2 className="text-primary">
           Change Password
-        </Typography>
+        </h2>
         <form onSubmit={this.onSubmit}>
           <TextField
             variant="outlined"
+            margin="normal"
             required={true}
             fullWidth
             name="passwordOne"
@@ -59,6 +59,7 @@ class PasswordChangeForm extends Component {
           />
           <TextField
             variant="outlined"
+            margin="normal"
             required={true}
             fullWidth
             name="passwordTwo"
@@ -70,6 +71,7 @@ class PasswordChangeForm extends Component {
           />
           <Button
             type="submit"
+            margin="normal"
             disabled={isInvalid}
             fullWidth
             variant="contained"

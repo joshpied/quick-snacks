@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import Logo from './components/Logo';
 import Navigation from './components/Navigation';
 import * as ROUTES from './constants/routes';
 import { withAuthentication } from './components/Session';
@@ -10,8 +11,11 @@ import SignUp from './auth/SignUp';
 import ForgotPassword from './auth/ForgotPassword';
 
 import Home from './pages/Home';
-import Account from './pages/Account'
+import Account from './pages/Account';
 import Landing from './pages/Landing';
+
+const containerStyle = { margin: '1em' };
+const hrStyle = { marginBottom: '0' };
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +27,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.firebase.auth.onAuthStateChanged(authUser => {
+    this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
       if (authUser) this.setState({ authUser });
       else this.setState({ authUser: null });
     });
@@ -36,16 +40,17 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <div style={containerStyle}>
+          <Logo />
           <Navigation />
-          <hr />
-          <Route exact path={ROUTES.LANDING} component={Landing} />
-          <Route path={ROUTES.SIGN_UP} component={SignUp} />
-          <Route path={ROUTES.SIGN_IN} component={SignIn} />
-          <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
-          <Route path={ROUTES.HOME} component={Home} />
-          <Route path={ROUTES.ACCOUNT} component={Account} />
         </div>
+        <hr style={hrStyle} />
+        <Route exact path={ROUTES.LANDING} component={Landing} />
+        <Route path={ROUTES.SIGN_UP} component={SignUp} />
+        <Route path={ROUTES.SIGN_IN} component={SignIn} />
+        <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
+        <Route path={ROUTES.HOME} component={Home} />
+        <Route path={ROUTES.ACCOUNT} component={Account} />
       </Router>
     );
   }

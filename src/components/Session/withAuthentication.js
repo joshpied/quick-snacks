@@ -13,9 +13,20 @@ const withAuthentication = Component => {
 
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-        authUser
-          ? this.setState({ authUser })
-          : this.setState({ authUser: null });
+        if (authUser) {
+          this.props.firebase
+            .user(authUser.uid)
+            .get()
+            .then(userDoc => {
+              if (userDoc.exists) {
+                authUser['userDetails'] = userDoc.data();
+                this.setState({ authUser });
+              } else {
+                console.log('No document in users collection');
+              }
+            });
+        }
+        else this.setState({ authUser: null });
       });
     }
 

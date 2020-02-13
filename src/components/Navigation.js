@@ -7,19 +7,9 @@ import Button from '@material-ui/core/Button';
 import * as ROUTES from '../constants/routes';
 import { AuthUserContext } from './Session';
 
-const ulStyle = {
-  display: 'flex',
-  listStyleType: 'none'
+const navStyle = {
+  marginTop: '0.5em'
 };
-
-const liStyle = {
-  marginLeft: '1em',
-  ':hover': {
-    background: 'red'
-  }
-};
-
-const navStyle = {};
 
 const linkStyle = {
   textDecoration: 'none'
@@ -37,7 +27,7 @@ const Navigation = () => (
 const NavigationAuth = () => (
   <div style={navStyle}>
     <Link to={ROUTES.HOME} style={linkStyle}>
-      <Button color="primary">Home</Button>
+      <Button color="primary">My Recipes</Button>
     </Link>
     <Link to={ROUTES.ACCOUNT} style={linkStyle}>
       <Button color="primary">Account</Button>
@@ -49,9 +39,6 @@ const NavigationAuth = () => (
 // Nav bar displayed when no user signed in
 const NavigationNonAuth = () => (
   <div style={navStyle}>
-    <Link to={ROUTES.LANDING} style={linkStyle}>
-      <Button color="primary">Landing</Button>
-    </Link>
     <Link to={ROUTES.SIGN_IN} style={linkStyle}>
       <Button color="primary">Sign In</Button>
     </Link>

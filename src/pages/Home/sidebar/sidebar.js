@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 import List from '@material-ui/core/List';
 import { Divider, Button } from '@material-ui/core';
-import SidebarItemComponent from '../sidebar-item/sidebar-item';
+
+import SidebarItemComponent from '../SidebarItem/SidebarItem';
 
 class SidebarComponent extends React.Component {
   constructor() {
@@ -24,7 +26,7 @@ class SidebarComponent extends React.Component {
             onClick={this.newRecipeBtnClick}
             className={classes.newRecipeBtn}
           >
-            {this.state.addingRecipe ? 'Cancel' : 'New Recipe'}
+            {this.state.addingRecipe ? 'Cancel' : '+ New Recipe'}
           </Button>
           {this.state.addingRecipe ? (
             <div>

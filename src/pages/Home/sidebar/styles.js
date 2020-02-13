@@ -18,8 +18,7 @@ const styles = theme => ({
     },
     newRecipeBtn: {
       width: '100%',
-      height: '35px',
-      borderBottom: '1px solid black',
+      height: '50px',
       borderRadius: '0px',
       backgroundColor: '#29487d',
       color: 'white',

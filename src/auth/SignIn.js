@@ -14,15 +14,14 @@ import { PasswordForgetLink } from './ForgotPassword';
 import * as ROUTES from '../constants/routes';
 import { withFirebase } from '../components/Firebase';
 
+const titleStyle = {
+  marginTop: '1em'
+};
+
 const SignInPage = () => (
   <div>
     <Container component="main" maxWidth="xs">
-      <Link to={ROUTES.LANDING}>
-        <div>
-          <h1>Quick Recipes</h1>
-        </div>
-      </Link>
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h5" style={titleStyle}>
         Sign In
       </Typography>
       <SignInForm />

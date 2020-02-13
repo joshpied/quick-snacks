@@ -37,3 +37,8 @@ html, body {
   top: 50px;
   left: calc(50% - 165px);
 }
+.no-selected-recipe-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

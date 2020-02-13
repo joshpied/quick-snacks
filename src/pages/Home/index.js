@@ -1,12 +1,13 @@
 import React from 'react';
-import SidebarComponent from './sidebar/sidebar';
-import EditorComponent from './editor/editor';
+import SidebarComponent from './Sidebar/Sidebar';
+import EditorComponent from './Editor/Editor';
 import './Home.css';
 import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase';
 import { AuthUserContext, withAuthorization } from '../../components/Session';
 
-const DEFAULT_RECIPE_BODY = '<h1>Ingredients</h1><ul><li>Item</li></ul><h1>Instructions</h1><ol><li>Step</li></ol>'
+const DEFAULT_RECIPE_BODY =
+  '<h1>Ingredients</h1><ul><li>Item</li></ul><h1>Instructions</h1><ol><li>Step</li></ol>';
 
 class Home extends React.Component {
   static contextType = AuthUserContext;
@@ -39,7 +40,11 @@ class Home extends React.Component {
                 updateRecipe={this.updateRecipe}
                 recipes={this.state.recipes}
               ></EditorComponent>
-            ) : null}
+            ) : (
+              <div className="no-selected-recipe-message">
+                <h2 className="text-primary">Select a recipe!</h2>
+              </div>
+            )}
           </div>
         )}
       </AuthUserContext.Consumer>
@@ -57,6 +62,10 @@ class Home extends React.Component {
       this.setState({ recipes: recipes });
     });
   };
+
+  // componentWillMount = () => {
+  //   this.listener();
+  // };
 
   selectRecipe = (recipe, index) =>
     this.setState({ selectedRecipeIndex: index, selectedRecipe: recipe });

@@ -3,11 +3,19 @@ import React from 'react';
 import { AuthUserContext, withAuthorization } from '../../components/Session';
 import PasswordChangeForm from './PasswordChange';
 
+const accounContainer = {
+  textAlign: 'center'
+};
+
 const Account = () => (
   <AuthUserContext.Consumer>
     {authUser => (
-      <div>
-        <h1>Account: {authUser.email}</h1>
+      <div style={accounContainer}>
+        <h2>
+          Account for{' '}
+          <span className="text-primary">{authUser.userDetails.username}</span>
+        </h2>
+        <h3>{authUser.userDetails.email}</h3>
         <PasswordChangeForm />
       </div>
     )}

@@ -1,0 +1,44 @@
+.landing-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, rgb(106, 120, 209), rgb(0, 164, 189));
+  padding-bottom: 100%;
+  /* margin-bottom: 20px; */
+  color: var(--font);
+}
+
+.landing-title {
+  width: 80%;
+  font-size: 4.5em;
+  margin-bottom: 0;
+}
+
+.landing-description {
+  width: 80%;
+  font-size: 2em;
+}
+
+.landing-signup-card {
+  background-color: var(--white);
+  padding: 5em 32em 5em 32em;
+  border-radius: 40px;
+}
+
+.landing-signup-card_link {
+  font-size: 2em;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 0.3em;
+  border-radius: 40px;
+  background-image: linear-gradient(120deg, #8fd3f4 0%, #7ab4d1 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.1em;
+  background-position: 0 88%;
+  transition: background-size 0.25s ease-in;
+}
+
+.landing-signup-card_link:hover {
+  background-size: 100% 100%;
+}

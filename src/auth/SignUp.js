@@ -12,10 +12,15 @@ import Container from '@material-ui/core/Container';
 import { withFirebase } from '../components/Firebase';
 import * as ROUTES from '../constants/routes';
 
+const titleStyle = {
+  marginTop: '1em',
+  marginBottom: '1em'
+};
+
 const SignUpPage = () => (
   <div>
     <Container component="main" maxWidth="xs">
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h5" style={titleStyle}>
         Sign Up
       </Typography>
       <SignUpForm />
@@ -152,6 +157,7 @@ class SignUpFormBase extends Component {
             disabled={isInvalid}
             fullWidth
             variant="contained"
+            style={titleStyle}
           >
             Sign Up
           </Button>
