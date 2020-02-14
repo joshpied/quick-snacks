@@ -4,18 +4,18 @@ html, body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 #quick-snacks-container {
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
 }
 .app-container {
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
 }
 .quill {
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
   width: calc(100% - 300px);
   float: left;
@@ -23,7 +23,7 @@ html, body {
 .ql-container {
   box-sizing: border-box;
   height: calc(100% - 42px);
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 .ql-editor {
   cursor: text;
